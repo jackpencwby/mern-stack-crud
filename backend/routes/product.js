@@ -7,19 +7,19 @@ const { upload } = require("../middleware/upload");
 const router = express.Router();
 
 // http://localhost:8000/api/product/
-router.get("/allProduct", auth, readAllProduct);
+router.get("/", readAllProduct);
 
 // http://localhost:8000/api/product/?id=
-router.get("/", auth, readProduct);
+router.get("/", readProduct);
 
 // http://localhost:8000/api/product/
-router.post("/", auth, access, upload, createProduct);
+router.post("/", upload, createProduct);
 
 // http://localhost:8000/api/product/?id=
-router.put("/", auth, access, upload, updateProduct);
+router.put("/", upload, updateProduct);
 
 // http://localhost:8000/api/product/?id=
-router.delete("/", auth, access, deleteProduct);
+router.delete("/", deleteProduct);
 
 module.exports.product_router = router;
 

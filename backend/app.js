@@ -6,7 +6,6 @@ const cookieParser = require("cookie-parser");
 const { connectDatabase } = require("./config/database");
 const { auth_router } = require("./routes/auth");
 const { product_router } = require("./routes/product");
-const { productTest_router } = require("./routes/productTest");
 
 const app = express();
 const port = 8000;
@@ -23,7 +22,6 @@ app.use(cookieParser());
 // Routes
 app.use("/api/auth", auth_router);
 app.use("/api/product", product_router);
-app.use("/api/productTest", productTest_router);
 
 app.listen(port, async () => {
     await connectDatabase();

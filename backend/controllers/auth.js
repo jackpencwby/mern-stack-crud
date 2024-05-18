@@ -9,11 +9,13 @@ exports.register = async (req, res) => {
     try {
         const { fullname, birthday, phone_number, email, password, confirm_password } = req.body;
 
+        console.log(req.body);
+
         if (!fullname || !birthday || !phone_number || !email || !password || !confirm_password) {
             throw { statusCode: 400, message: "Please enter complete information" };
         }
 
-        const [accountInDatabase] = await Account.findOne({ email });
+        const accountInDatabase = await Account.findOne({ email });
         if (accountInDatabase) {
             throw { statusCode: 400, message: "This email is already exist" };
         }
@@ -22,6 +24,8 @@ exports.register = async (req, res) => {
         }
 
         const passwordHash = await bcrypt.hash(password, 10);
+
+        console.log(passwordHash);
 
         const newUser = new User({
             fullname,

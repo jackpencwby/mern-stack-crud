@@ -36,6 +36,7 @@ async function createProduct(req, res) {
         const { name, price } = req.body;
         const image_product = req.file;
         if (!name || !price || !image_product) {
+            //Fix Bug
             if (image_product) {
                 fs.unlinkSync(`./files/product_images/${image_product.filename}`);
             }
@@ -66,7 +67,7 @@ async function updateProduct(req, res) {
         const id = req.query.id;
         const { name, price } = req.body;
         const image_product = req.file;
-
+        
         console.log(name, price, image_product);
 
         const product = await Product.findOne({ _id: id });
