@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const { Account } = require("../models/account");
 const { User } = require("../models/user");
 
-exports.register = async (req, res) => {
+async function register(req, res) {
     try {
         const { fullname, birthday, phone_number, email, password, confirm_password } = req.body;
 
@@ -38,7 +38,7 @@ exports.register = async (req, res) => {
             email,
             password: passwordHash,
             role: "general",
-            user: newUser._id
+            userId: newUser._id
         });
         await newAccount.save();
 
@@ -52,7 +52,7 @@ exports.register = async (req, res) => {
     }
 };
 
-exports.login = async (req, res) => {
+async function login(req, res) {
     try {
         const { email, password } = req.body;
 
@@ -69,7 +69,7 @@ exports.login = async (req, res) => {
             throw { statusCode: 400, message: "Wrong Password" };
         }
 
-        const userInDatabase = await User.findOne({ _id: accountInDatabase.user });
+        const userInDatabase = await User.findOne({ _id: accountInDatabase.userId });
 
         const payload = {
             fullname: userInDatabase.fullname,
@@ -96,4 +96,33 @@ exports.login = async (req, res) => {
         res.status(statusCode).json({ message });
     }
 };
+
+async function logout(req, res) {
+    try {
+        let token = req.cookies.token;
+        
+        if(!token) {
+            throw {statusCode: 401, message: "Please Login First"};
+        }
+
+        res.cookie("token", token, {
+            maxAge: 0,
+            secure: true,
+            httpOnly: true,
+            sameSite: "none"
+        });
+
+        res.status(200).json({
+            message: "Logout Successfully",
+        }); 
+    }
+    catch (err) {
+        let statusCode = err.statusCode || 500;
+        let message = err.message || "Internal Server Error";
+        console.error(err.message);
+        res.status(statusCode).json({ message });
+    }
+}
+
+module.exports = { register, login, logout };
 

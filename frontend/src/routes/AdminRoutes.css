@@ -1,0 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap");
+
+html,
+body,
+#root,
+.app,
+.content {
+    height: 100%;
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
+}
+
+.content-body {
+    background-image: linear-gradient(to top, #09203f 0%, #537895 100%);
+    width: 100%;
+    height: 94%;
+    overflow: scroll;
+}
+
+.app {
+    display: flex;
+    position: relative;
+}
+
+.menu-bars {
+    text-decoration: none;
+    color:black;
+}
+
+::-webkit-scrollbar {
+    width: 16px;
+}
+
+::-webkit-scrollbar-track {
+    background: lightgray;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

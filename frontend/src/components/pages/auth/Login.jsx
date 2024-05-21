@@ -6,13 +6,13 @@ import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { login } from '../../../fetchs/auth';
+import { login } from '../../../fetchs/auth'
 import { useNavigate } from 'react-router-dom';
 
 function Copyright(props) {
@@ -20,7 +20,7 @@ function Copyright(props) {
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
             {'Copyright © '}
             <Link color="inherit" href="https://mui.com/">
-                Your Website
+                MERN STACK CRUD
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -40,7 +40,7 @@ export default function Login() {
         try {
             event.preventDefault();
             const data = new FormData(event.currentTarget);
-    
+
             const response = await login({
                 email: data.get('email'),
                 password: data.get('password'),
@@ -48,10 +48,12 @@ export default function Login() {
 
             const { role } = response.data;
 
-            if(role === "admin") {
-                navigate("/admin/table");
+            if (role === "admin") {
+                navigate("/admin/home")
             }
-
+            else if (role === "general") {
+                navigate("/user/home")
+            }
         }
         catch (err) {
             alert("เข้าสู่ระบบไม่สำเร็จ");
@@ -60,63 +62,84 @@ export default function Login() {
 
     return (
         <ThemeProvider theme={defaultTheme}>
-            <Container component="main" maxWidth="xs">
+            <Grid container component="main" sx={{ height: '100vh' }}>
                 <CssBaseline />
-                <Box
+                <Grid
+                    item
+                    xs={false}
+                    sm={4}
+                    md={7}
                     sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
+                        backgroundImage: 'url(/login.jpg)',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundColor: (t) =>
+                            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
                     }}
-                >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        เข้าสู่ระบบ
-                    </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="อีเมล"
-                            name="email"
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="รหัสผ่าน"
-                            type="password"
-                            id="password"
-                        />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
+                />
+                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                    <Box
+                        sx={{
+                            my: 8,
+                            mx: 4,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <Typography component="h1" variant="h5">
                             เข้าสู่ระบบ
-                        </Button>
-                        <Grid container justifyContent="flex-end">
-                            <Grid item>
-                                <Link href="/register" variant="body2">
-                                    ยังไม่มีบัญชีใช่ไหม ? 
-                                </Link>
+                        </Typography>
+                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                type="email"
+                                name="email"
+                                id="email"
+                                label="อีเมล"
+                                autoComplete="email"
+                                autoFocus
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                type="password"
+                                name="password"
+                                id="password"
+                                label="รหัสผ่าน"
+                                autoComplete="current-password"
+                            />
+                            <FormControlLabel
+                                control={<Checkbox value="remember" color="primary" />}
+                                label="Remember me"
+                            />
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}
+                            >
+                                เข้าสู่ระบบ
+                            </Button>
+                            <Grid container justifyContent="flex-end">
+                                <Grid item>
+                                    <Link href="/register" variant="body2">
+                                        ยังไม่มีบัญชีใช่ไหม ?
+                                    </Link>
+                                </Grid>
                             </Grid>
-                        </Grid>
+                            <Copyright sx={{ mt: 5 }} />
+                        </Box>
                     </Box>
-                </Box>
-                <Copyright sx={{ mt: 8, mb: 4 }} />
-            </Container>
+                </Grid>
+            </Grid>
         </ThemeProvider>
     );
 }

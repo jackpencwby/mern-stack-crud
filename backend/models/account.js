@@ -10,7 +10,7 @@ const accountSchema = mongoose.Schema({
     role: {
         type: String
     },
-    user: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: "User" 
     }

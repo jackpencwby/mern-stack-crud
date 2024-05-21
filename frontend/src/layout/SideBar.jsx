@@ -1,22 +1,15 @@
 import React, { useState } from "react";
-import {
-    Sidebar,
-    Menu,
-    MenuItem,
-    SubMenu
-} from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme, Badge } from "@mui/material";
-import { Link } from "react-router-dom";
-
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
+import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
+import { Box, IconButton, Typography } from "@mui/material";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import TableViewIcon from '@mui/icons-material/TableView';
+import TableRowsIcon from '@mui/icons-material/TableRows';
+import PeopleIcon from '@mui/icons-material/People';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import PersonIcon from '@mui/icons-material/Person';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { Link } from "react-router-dom";
 
 const SideBar = () => {
     const [isCollapsed, setisCollapsed] = useState(false);
@@ -36,10 +29,7 @@ const SideBar = () => {
                 onBackdropClick={() => setToggled(false)}
                 onBreakPoint={setBroken}
                 breakPoint="md"
-                style={{
-                    height: "100%",
-                    backgroundColor: "black"
-                }}
+                style={{ height: "100%", backgroundColor: "black" }}
 
             >
                 <div
@@ -62,7 +52,7 @@ const SideBar = () => {
                                         alignItems="center"
                                         ml="15px"
                                     >
-                                        <Typography >MERN STACK</Typography>
+                                        <Typography>MERN STACK</Typography>
                                         <IconButton onClick={() => setisCollapsed(!isCollapsed)}>
                                             <MenuOutlinedIcon />
                                         </IconButton>
@@ -78,37 +68,45 @@ const SideBar = () => {
                                     >
                                         <img
                                             alt="profile-user"
-                                            width="100px"
-                                            height="100px"
-                                            src={`/user_profile.png`}
+                                            width="80px"
+                                            height="80px"
+                                            src="/user_profile.png"
                                             style={{ cursor: "pointer", borderRadius: "50%" }}
                                         />
                                     </Box>
                                     <Box textAlign="center">
-                                        <Typography sx={{ m: "10px 0 0 0" }}>Jackpencwby</Typography>
+                                        <Typography sx={{ m: "10px 0 0 0" }}>Developer</Typography>
                                     </Box>
                                 </Box>
                             )}
 
-                            <Link to="/admin" className="menu-bars">
-                                <MenuItem icon={<HomeOutlinedIcon />}>Dashboard</MenuItem>
+                            <Link to="/admin/home" className="menu-bars">
+                                <MenuItem icon={<HomeOutlinedIcon />}>Home</MenuItem>
                             </Link>
 
-                            <SubMenu icon={<MapOutlinedIcon />} label="Data">
-                                <Link to={"/admin/table"} className="menu-bars">
-                                    <MenuItem icon={<TableViewIcon />}>
+                            <SubMenu icon={<TableViewIcon />} label="Table">
+                                <Link to={"/admin/table/products"} className="menu-bars">
+                                    <MenuItem icon={<TableRowsIcon />}>
                                         {" "}
-                                        Table
+                                        Products
                                     </MenuItem>
                                 </Link>
                             </SubMenu>
 
-                            <SubMenu label="Manage" icon={<PeopleOutlinedIcon />}>
-                                <Link to={"/admin/manage"} className="menu-bars">
-                                    <MenuItem>User</MenuItem>
+                            <SubMenu label="Manage" icon={<PeopleIcon />}>
+                                <Link to={"/admin/manage-admin"} className="menu-bars">
+                                    <MenuItem icon={<AdminPanelSettingsIcon/>}>Admin</MenuItem>
                                 </Link>
-                                <MenuItem> Admin</MenuItem>
+                                <Link to={"/admin/manage-user"} className="menu-bars">
+                                    <MenuItem icon={<PersonIcon/>}>User</MenuItem>
+                                </Link>
                             </SubMenu>
+                        </Menu>
+
+                        <hr />
+
+                        <Menu>
+                            <MenuItem icon={<LogoutIcon />}>Logout</MenuItem>
                         </Menu>
                     </div>
                 </div>

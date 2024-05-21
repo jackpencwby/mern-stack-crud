@@ -68,7 +68,7 @@ async function updateProduct(req, res) {
         const { name, price } = req.body;
         const image_product = req.file;
         
-        console.log(name, price, image_product);
+        console.log(name, typeof(price), image_product);
 
         const product = await Product.findOne({ _id: id });
         if (image_product) {
@@ -82,6 +82,9 @@ async function updateProduct(req, res) {
         };
 
         await Product.updateOne({ _id: id }, { $set: updateProduct });
+
+        const result = await Product.findOne({_id: id});
+        console.log(typeof(result.price));
 
         res.status(200).json({
             message: "Update Successfully",
