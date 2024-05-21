@@ -1,6 +1,6 @@
 const express = require("express");
 const { register, login, logout } = require("../controllers/auth");
-const { authenticateToken } = require("../util/authenticateToken");
+const authenticateToken = require("../util/authenticateToken");
 
 const router = express.Router();
 
@@ -16,5 +16,4 @@ router.get("/logout", logout);
 // http://localhost:8000/api/auth/protected
 router.get("/protected", authenticateToken);
 
-module.exports.auth_router = router;
- 
+module.exports = router;

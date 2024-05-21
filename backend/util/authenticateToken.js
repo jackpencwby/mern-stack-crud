@@ -1,18 +1,21 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
-exports.authenticateToken = async (req, res) => {
+async function authenticateToken(req, res) {
     try {
-        let authToken = req.cookies.token;
-        let { fullname, role } = await jwt.verify(authToken, process.env.SIGNATURE);
-        res.json({
+        const token = req.cookies.token;
+        const { fullname, role } = await jwt.verify(token, process.env.SIGNATURE);
+        res.send({
             fullname,
             role
         });
     }
-    catch(err) {
-        console.error(err.message);
-        res.status(401).json({message: err.message});
+    catch (error) {
+        console.error(error.message);
+        res.status(401).json({
+            message: error.message
+        });
     }
-};
+}
 
+module.exports = authenticateToken;

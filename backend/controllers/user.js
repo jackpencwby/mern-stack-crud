@@ -1,5 +1,5 @@
-const { User } = require("../models/user");
-const { Account } = require("../models/account");
+const User = require("../models/user");
+const Account = require("../models/account");
 
 async function getAdminData(req, res) {
     try {
@@ -7,16 +7,19 @@ async function getAdminData(req, res) {
 
         const adminAccount = await Account.find({ role: "admin" });
 
-        for (const account of adminAccount) {
+        for (let account of adminAccount) {
             const data = await User.findOne({ _id: account.userId });
-            const { email, password } = account;
-            adminData.push({ ...data._doc, email, password });
+            const { email, password, role } = account;
+            adminData.push({ ...data._doc, email, password, role });
         }
 
         res.status(200).json(adminData);
     }
-    catch (err) {
-        console.error(err.message);
+    catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            message: error.message
+        });
     }
 }
 
@@ -26,17 +29,42 @@ async function getUserData(req, res) {
 
         const userAccount = await Account.find({ role: "general" });
 
-        for (const account of userAccount) {
+        for (let account of userAccount) {
             const data = await User.findOne({ _id: account.userId });
-            const { email, password } = account;
-            userData.push({ ...data._doc, email, password });
+            const { email, password, role } = account;
+            userData.push({ ...data._doc, email, password, role });
         }
 
         res.status(200).json(userData);
     }
-    catch (err) {
-        console.error(err.message);
+    catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            message: error.message
+        });
     }
 }
 
-module.exports = { getAdminData, getUserData };
+async function changeRole(req, res) {
+    try {
+        const id = req.query.id;
+
+        const account = await Account.findOne({ userId: id });
+        if (account.role === "admin") {
+            await Account.updateOne({ userId: id }, { $set: { role: "general" } });
+        }
+        else {
+            await Account.updateOne({ userId: id }, { $set: { role: "admin" } });
+        }
+
+        res.status(200).json({ message: "Update Successfully" });
+    }
+    catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            message: error.message
+        });
+    }
+}
+
+module.exports = { getAdminData, getUserData, changeRole };

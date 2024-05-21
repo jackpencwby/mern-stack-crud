@@ -1,35 +1,35 @@
 const fs = require("fs");
-const { Product } = require("../models/product");
+const Product = require("../models/product");
 
 async function readAllProduct(req, res) {
     try {
         const products = await Product.find();
         res.status(200).json(products);
     }
-    catch (err) {
-        let statusCode = err.statusCode || 500;
-        let message = err.message || "Internal Server Error";
-        console.error(err.message);
+    catch (error) {
+        const statusCode = error.statusCode || 500;
+        const message = error.message || "Internal Server Error";
+        console.error(error.message);
         res.status(statusCode).json({ message });
     }
-};
+}
 
 async function readProduct(req, res) {
     try {
         const id = req.query.id;
         const product = await Product.findOne({ _id: id })
         if (!product) {
-            throw { statusCode: 404, message: "No information found for this product" };
+            throw { statusCode: 404, message: "ไม่พบข้อมูลสินค้านี้" };
         }
         res.status(200).json(product);
     }
-    catch (err) {
-        let statusCode = err.statusCode || 500;
-        let message = err.message || "Internal Server Error";
-        console.error(err.message);
+    catch (error) {
+        const statusCode = error.statusCode || 500;
+        const message = error.message || "Internal Server Error";
+        console.error(error.message);
         res.status(statusCode).json({ message });
     }
-};
+}
 
 async function createProduct(req, res) {
     try {
@@ -40,7 +40,7 @@ async function createProduct(req, res) {
             if (image_product) {
                 fs.unlinkSync(`./files/product_images/${image_product.filename}`);
             }
-            throw { statusCode: 400, message: "Please enter complete information" };
+            throw { statusCode: 400, message: "กรุณาใส่ข้อมูลให้ครบ" };
         }
 
         const newProduct = new Product({
@@ -51,24 +51,22 @@ async function createProduct(req, res) {
         await newProduct.save();
 
         res.status(201).json({
-            message: "Create Successfully",
+            message: "Create Successfully"
         });
     }
-    catch (err) {
-        let statusCode = err.statusCode || 500;
-        let message = err.message || "Internal Server Error";
-        console.error(err.message);
+    catch (error) {
+        const statusCode = error.statusCode || 500;
+        const message = error.message || "Internal Server Error";
+        console.error(error.message);
         res.status(statusCode).json({ message });
     }
-};
+}
 
 async function updateProduct(req, res) {
     try {
         const id = req.query.id;
         const { name, price } = req.body;
         const image_product = req.file;
-        
-        console.log(name, typeof(price), image_product);
 
         const product = await Product.findOne({ _id: id });
         if (image_product) {
@@ -80,37 +78,39 @@ async function updateProduct(req, res) {
             price: price || product.price,
             image: (image_product && image_product.filename) || product.image
         };
-
         await Product.updateOne({ _id: id }, { $set: updateProduct });
-
-        const result = await Product.findOne({_id: id});
-        console.log(typeof(result.price));
 
         res.status(200).json({
             message: "Update Successfully",
         });
     }
-    catch (err) {
-        console.error(err);
-        res.status(500).json({ message: err.message });
+    catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            message: error.message
+        });
     }
-};
+}
 
 async function deleteProduct(req, res) {
     try {
         const id = req.query.id;
+
         const product = await Product.findOne({ _id: id });
+
         fs.unlinkSync(`./files/product_images/${product.image}`);
         await Product.deleteOne({ _id: id });
+
         res.status(200).json({
             message: "Delete Successfully",
         });
     }
-    catch (err) {
-        console.error(err.message);
-        res.status(500).json({ message: err.message });
+    catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            message: error.message
+        });
     }
-};
+}
 
-
-module.exports = { readAllProduct, readProduct, createProduct, updateProduct, deleteProduct }
+module.exports = { readAllProduct, readProduct, createProduct, updateProduct, deleteProduct };

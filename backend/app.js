@@ -3,10 +3,10 @@ const morgan = require("morgan");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const { connectDatabase } = require("./config/database");
-const { auth_router } = require("./routes/auth");
-const { product_router } = require("./routes/product");
-const { user_router } = require("./routes/user");
+const connectDatabase = require("./config/database");
+const authRouter = require("./routes/auth");
+const productRouter = require("./routes/product");
+const userRouter = require("./routes/user");
 
 const app = express();
 const port = 8000;
@@ -21,9 +21,9 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 // Routes
-app.use("/api/auth", auth_router);
-app.use("/api/product", product_router);
-app.use("/api/user", user_router);
+app.use("/api/auth", authRouter);
+app.use("/api/product", productRouter);
+app.use("/api/user", userRouter);
 
 app.listen(port, async () => {
     await connectDatabase();

@@ -17,7 +17,7 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
-const navItems = [{action: "เข้าสู่ระบบ", link: "/login"}, {action: "สมัครสมาชิก", link: "/register"}]
+const navItems = [{ action: "เข้าสู่ระบบ", link: "/login" }, { action: "สมัครสมาชิก", link: "/register" }]
 
 function HomePage(props) {
     const { window } = props;

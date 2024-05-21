@@ -19,6 +19,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import 'dayjs/locale/en-gb';
 import { register } from '../../../fetchs/auth'
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 
 function Copyright(props) {
     return (
@@ -44,6 +46,7 @@ export default function Register() {
     const handleSubmit = async (event) => {
         try {
             event.preventDefault();
+
             const data = new FormData(event.currentTarget);
 
             const response = await register({
@@ -55,12 +58,30 @@ export default function Register() {
                 confirm_password: data.get('confirm_password')
             });
 
-            alert("สมัครสมาชิกสำเร็จ");
+            toast.success("สมัครสมาชิกสำเร็จ", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            });
 
             navigate('/login');
         }
-        catch (err) {
-            alert("สมัครสมาชิกไม่สำเร็จ")
+        catch (error) {
+            toast.error(error.response.data.message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored"
+            });
         }
     };
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,12 +7,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import { getUserData } from '../../../fetchs/user';
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
+import { getUserData, changeRole } from '../../../fetchs/user';
+import { toast } from 'react-toastify';
 
 function ManageUser() {
-
 	const [userData, setUserData] = useState([]);
 
 	useEffect(() => {
@@ -19,14 +19,39 @@ function ManageUser() {
 	}, []);
 
 	const getData = async () => {
-		const response = await getUserData();
-		const userData = response.data;
-		setUserData(userData.map(data => {
-			const birthdayNewFormat = data.birthday.split("T")[0];
-			return {...data, birthday: birthdayNewFormat};
-		})
-	);
-		
+		try {
+			const response = await getUserData();
+			const userData = response.data;
+			setUserData(userData.map(data => {
+				const birthdayNewFormat = data.birthday.split("T")[0];
+				return { ...data, birthday: birthdayNewFormat };
+			})
+			);
+		}
+		catch (error) {
+			console.log(error);
+		}
+	};
+
+	const changeRoleToUser = async (id) => {
+		try {
+			await changeRole(id);
+			await getData();
+
+			toast.warning("เปลี่ยนสถานะเป็น Admin สำเร็จ", {
+				position: "top-center",
+				autoClose: 3000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "colored",
+			});
+		}
+		catch (error) {
+			console.log(error);
+		}
 	};
 
 	return (
@@ -40,8 +65,9 @@ function ManageUser() {
 							<TableCell>ชื่อ</TableCell>
 							<TableCell>วันเกิด</TableCell>
 							<TableCell>เบอร์โทรศัพท์</TableCell>
-              <TableCell>อีเมล</TableCell>
+							<TableCell>อีเมล</TableCell>
 							<TableCell>รหัสผ่าน</TableCell>
+							<TableCell align='center'>เปลี่ยนสถานะ ( Role )</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -54,14 +80,13 @@ function ManageUser() {
 								<TableCell>{data.fullname}</TableCell>
 								<TableCell>{data.birthday}</TableCell>
 								<TableCell>{data.phone_number}</TableCell>
-                <TableCell>{data.email}</TableCell>
+								<TableCell>{data.email}</TableCell>
 								<TableCell>{data.password}</TableCell>
-								{/* <TableCell>
-									<Link to={`/admin/table/products/edit/${product._id}`} >
-										<EditIcon color='warning' />
+								<TableCell align='center'>
+									<Link>
+										<ChangeCircleIcon onClick={() => changeRoleToUser(data._id)} />
 									</Link>
 								</TableCell>
-								<TableCell><DeleteIcon color='error' onClick={() => deleteProduct(product._id)} /></TableCell> */}
 							</TableRow>
 						))}
 					</TableBody>

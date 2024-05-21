@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { login } from '../../../fetchs/auth'
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function Copyright(props) {
     return (
@@ -33,12 +34,12 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function Login() {
-
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         try {
             event.preventDefault();
+
             const data = new FormData(event.currentTarget);
 
             const response = await login({
@@ -47,16 +48,24 @@ export default function Login() {
             });
 
             const { role } = response.data;
-
             if (role === "admin") {
                 navigate("/admin/home")
             }
-            else if (role === "general") {
+            else {
                 navigate("/user/home")
             }
         }
-        catch (err) {
-            alert("เข้าสู่ระบบไม่สำเร็จ");
+        catch (error) {
+            toast.error(error.response.data.message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored"
+            });
         }
     };
 

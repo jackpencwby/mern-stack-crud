@@ -11,11 +11,15 @@ import UserRoutes from "./routes/UserRoutes";
 import HomePageUser from "./components/pages/user/HomePageUser";
 import NotFound404 from "./components/pages/NotFound404";
 import HomePage from "./components/pages/HomePage";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 	return (
 		<BrowserRouter>
 			<>
+				<ToastContainer/>
+
 				<Routes>
 					<Route path="*" element={<NotFound404 />} />
 
@@ -31,31 +35,36 @@ function App() {
 						</AdminRoutes>
 					}
 					/>
+
 					<Route path="/admin/table/products" element={
 						<AdminRoutes>
 							<FormProduct />
 						</AdminRoutes>
 					}
 					/>
+
 					<Route path="/admin/table/products/edit/:id" element={
 						<AdminRoutes>
 							<FormEditProduct />
 						</AdminRoutes>
 					}
 					/>
+
 					<Route path="/admin/manage-admin" element={
 						<AdminRoutes>
 							<ManageAdmin />
 						</AdminRoutes>
 					}
 					/>
+
 					<Route path="/admin/manage-user" element={
 						<AdminRoutes>
 							<ManageUser />
 						</AdminRoutes>
 					}
 					/>
-					<Route path="user/homepage" element={
+
+					<Route path="user/home" element={
 						<UserRoutes>
 							<HomePageUser />
 						</UserRoutes>

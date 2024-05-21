@@ -10,11 +10,19 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Link } from "react-router-dom";
+import { logout } from "../fetchs/auth";
+import { useNavigate } from "react-router-dom";
 
 const SideBar = () => {
     const [isCollapsed, setisCollapsed] = useState(false);
     const [toggled, setToggled] = useState(false);
     const [broken, setBroken] = useState(false);
+    const navigate = useNavigate();
+
+    const signout = async () => {
+        await logout();
+        navigate("/login");
+    };
 
     return (
         <div
@@ -95,10 +103,10 @@ const SideBar = () => {
 
                             <SubMenu label="Manage" icon={<PeopleIcon />}>
                                 <Link to={"/admin/manage-admin"} className="menu-bars">
-                                    <MenuItem icon={<AdminPanelSettingsIcon/>}>Admin</MenuItem>
+                                    <MenuItem icon={<AdminPanelSettingsIcon />}>Admin</MenuItem>
                                 </Link>
                                 <Link to={"/admin/manage-user"} className="menu-bars">
-                                    <MenuItem icon={<PersonIcon/>}>User</MenuItem>
+                                    <MenuItem icon={<PersonIcon />}>User</MenuItem>
                                 </Link>
                             </SubMenu>
                         </Menu>
@@ -106,7 +114,7 @@ const SideBar = () => {
                         <hr />
 
                         <Menu>
-                            <MenuItem icon={<LogoutIcon />}>Logout</MenuItem>
+                            <MenuItem icon={<LogoutIcon />} onClick={signout}>Logout</MenuItem>
                         </Menu>
                     </div>
                 </div>

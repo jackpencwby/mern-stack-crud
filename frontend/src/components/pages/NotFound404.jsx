@@ -24,7 +24,7 @@ export default function NotFound404() {
             </Typography>
             <br />
             <Link to="/">
-                <Button variant="contained">กลับสู่หน้าเเรก</Button>
+              <Button variant="contained">กลับสู่หน้าเเรก</Button>
             </Link>
           </Grid>
           <Grid xs={6}>

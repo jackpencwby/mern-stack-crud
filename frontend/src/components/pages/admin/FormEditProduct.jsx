@@ -3,33 +3,55 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { updateData } from '../../../fetchs/product.jsx';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import { toast } from 'react-toastify';
 
 function FormEditProduct() {
-
-    const { id } = useParams();
-    const navigate = useNavigate();
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
     const [file, setFile] = useState({});
-
+    const { id } = useParams();
+    const navigate = useNavigate();
 
     const updateProduct = async (e) => {
-        e.preventDefault();
+        try {
+            e.preventDefault();
 
-        let formData = new FormData();
-        formData.append("name", name);
-        formData.append("price", price);
-        formData.append("file", file);
+            let formData = new FormData();
+            formData.append("name", name);
+            formData.append("price", price);
+            formData.append("file", file);
 
-        await updateData(id, formData);
+            await updateData(id, formData);
 
-        setName("");
-        setPrice("");
-        setFile({});
+            toast.success("เเก้ไขข้อมูลสินค้าสำเร็จ", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
 
-        alert("เเก้ไขข้อมูลสินค้าสำเร็จ");
+            setName("");
+            setPrice("");
+            setFile({});
 
-        navigate("/admin/table/products");
+            navigate("/admin/table/products");
+        }
+        catch (error) {
+            toast.error(error.response.data.message, {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
+        }
     }
 
     return (

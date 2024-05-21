@@ -1,20 +1,21 @@
 require("dotenv").config();
-const { SIGNATURE } = process.env;
 const jwt = require("jsonwebtoken");
 
-exports.access = async (req, res, next) => {
+async function access(req, res, next) {
     try {
-        let authToken = req.cookies.token;
-        let { role } = await jwt.verify(authToken, SIGNATURE);
+        const authToken = req.cookies.token;
+        const { role } = await jwt.verify(authToken, process.env.SIGNATURE);
         if (role !== "admin") {
             throw { statusCode: 401, message: "คุณไม่มีสิทธิ์เข้าถึงในการใช้ API เพราะคุณไม่ใช่ Admin" };
         }
         next();
     }
-    catch (err) {
-        let statusCode = err.statusCode || 500;
-        let message = err.message || "Internal Server Error";
-        console.error(err.message);
+    catch (error) {
+        const statusCode = error.statusCode || 500;
+        const message = error.message || "Internal Server Error";
+        console.error(error.message);
         res.status(statusCode).json({ message });
     }
 };
+
+module.exports = access;
