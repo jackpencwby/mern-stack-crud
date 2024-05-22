@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from "react-router-dom"
-import { getData, addData, deleteData } from '../../../fetchs/product.jsx';
+import { getAllProduct, addProduct, deleteProduct } from '../../../fetchs/product.jsx';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
@@ -21,12 +21,12 @@ function FormProduct() {
     const [file, setFile] = useState({});
 
     useEffect(() => {
-        getAllProduct();
+        getItems();
     }, [])
 
-    const getAllProduct = async () => {
+    const getItems = async () => {
         try {
-            const response = await getData();
+            const response = await getAllProduct();
             setProducts(response.data);
         }
         catch (error) {
@@ -34,7 +34,7 @@ function FormProduct() {
         }
     }
 
-    const addProduct = async (e) => {
+    const addItem = async (e) => {
         try {
             e.preventDefault();
 
@@ -43,8 +43,8 @@ function FormProduct() {
             formData.append("price", price);
             formData.append("file", file);
 
-            await addData(formData);
-            await getAllProduct();
+            await addProduct(formData);
+            await getItems();
 
             toast.success("เพิ่มรายการสินค้าสำเร็จ", {
                 position: "top-center",
@@ -76,10 +76,10 @@ function FormProduct() {
 
     }
 
-    const deleteProduct = async (id) => {
+    const deleteItem = async (id) => {
         try {
-            await deleteData(id);
-            await getAllProduct();
+            await deleteProduct(id);
+            await getItems();
 
             toast.error("ลบรายการสินค้าสำเร็จ", {
                 position: "top-center",
@@ -99,9 +99,9 @@ function FormProduct() {
 
     return (
         <div>
-            <h1 style={{ textAlign: "center", color: "white" }}>ฟอร์มเเสดงรายการสินค้าเเละเพิ่มรายการสินค้า</h1>
-            <form onSubmit={addProduct} encType='multipart/form-data' style={{ marginBottom: "36px" }}>
-                <h2 style={{ color: "white" }}>เพิ่มรายการสินค้า</h2>
+            <h2 style={{ textAlign: "center", color: "white" }}>ฟอร์มเเสดงรายการสินค้าเเละเพิ่มรายการสินค้า</h2>
+            <form onSubmit={addItem} encType='multipart/form-data' style={{ marginBottom: "36px" }}>
+                <h4 style={{ color: "white" }}>เพิ่มรายการสินค้า</h4>
                 <div>
                     <TextField
                         type="text"
@@ -209,7 +209,7 @@ function FormProduct() {
                                 </TableCell>
                                 <TableCell>
                                     <Link>
-                                        <DeleteIcon color='error' onClick={() => deleteProduct(product._id)} />
+                                        <DeleteIcon color='error' onClick={() => deleteItem(product._id)} />
                                     </Link>
                                 </TableCell>
                             </TableRow>

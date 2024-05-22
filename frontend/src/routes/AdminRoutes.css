@@ -1,13 +1,13 @@
-@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap");
-
 html,
 body,
 #root,
 .app,
 .content {
+    background: linear-gradient(-180deg, #BCC5CE 0%, #929EAD 98%), radial-gradient(at top left, rgba(255, 255, 255, 0.30) 0%, rgba(0, 0, 0, 0.30) 100%);
+    background-blend-mode: screen;
+    font-family: Arial, Helvetica, sans-serif;
     height: 100%;
     width: 100%;
-    font-family: Arial, Helvetica, sans-serif;
     overflow: hidden;
 }
 
@@ -25,21 +25,5 @@ body,
 
 .menu-bars {
     text-decoration: none;
-    color:black;
-}
-
-::-webkit-scrollbar {
-    width: 16px;
-}
-
-::-webkit-scrollbar-track {
-    background: lightgray;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #888;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    color: black;
 }

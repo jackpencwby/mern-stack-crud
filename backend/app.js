@@ -24,6 +24,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRouter);
 app.use("/api/product", productRouter);
 app.use("/api/user", userRouter);
+app.use("/api/upload", express.static("./files/product_images"));
 
 app.listen(port, async () => {
     await connectDatabase();

@@ -3,7 +3,7 @@ const Product = require("../models/product");
 
 async function readAllProduct(req, res) {
     try {
-        const products = await Product.find();
+        const products = await Product.find().exec();
         res.status(200).json(products);
     }
     catch (error) {
@@ -17,7 +17,7 @@ async function readAllProduct(req, res) {
 async function readProduct(req, res) {
     try {
         const id = req.query.id;
-        const product = await Product.findOne({ _id: id })
+        const product = await Product.findOne({ _id: id }).exec()
         if (!product) {
             throw { statusCode: 404, message: "ไม่พบข้อมูลสินค้านี้" };
         }
@@ -68,7 +68,7 @@ async function updateProduct(req, res) {
         const { name, price } = req.body;
         const image_product = req.file;
 
-        const product = await Product.findOne({ _id: id });
+        const product = await Product.findOne({ _id: id }).exec();
         if (image_product) {
             fs.unlinkSync(`./files/product_images/${product.image}`);
         }
@@ -78,7 +78,7 @@ async function updateProduct(req, res) {
             price: price || product.price,
             image: (image_product && image_product.filename) || product.image
         };
-        await Product.updateOne({ _id: id }, { $set: updateProduct });
+        await Product.updateOne({ _id: id }, { $set: updateProduct }).exec();
 
         res.status(200).json({
             message: "Update Successfully",
@@ -96,7 +96,7 @@ async function deleteProduct(req, res) {
     try {
         const id = req.query.id;
 
-        const product = await Product.findOne({ _id: id });
+        const product = await Product.findOne({ _id: id }).exec();
 
         fs.unlinkSync(`./files/product_images/${product.image}`);
         await Product.deleteOne({ _id: id });

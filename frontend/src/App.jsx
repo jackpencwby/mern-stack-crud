@@ -10,9 +10,10 @@ import ManageUser from "./components/pages/admin/ManageUser";
 import UserRoutes from "./routes/UserRoutes";
 import HomePageUser from "./components/pages/user/HomePageUser";
 import NotFound404 from "./components/pages/NotFound404";
-import HomePage from "./components/pages/HomePage";
+import HomePage from "./components/pages/homepage/HomePage";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
 	return (

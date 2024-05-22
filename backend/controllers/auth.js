@@ -11,7 +11,7 @@ async function register(req, res) {
             throw { statusCode: 400, message: "กรุณาใส่ข้อมูลให้ครบ" };
         }
 
-        const accountInDatabase = await Account.findOne({ email });
+        const accountInDatabase = await Account.findOne({ email }).exec();
         if (accountInDatabase) {
             throw { statusCode: 400, message: "อีเมลนี้ถูกใช้งานเเล้ว" };
         }
@@ -56,7 +56,7 @@ async function login(req, res) {
             throw { statusCode: 400, message: "กรุณาใส่ข้อมูลให้ครบ" };
         }
 
-        const accountInDatabase = await Account.findOne({ email });
+        const accountInDatabase = await Account.findOne({ email }).exec();
         if (!accountInDatabase) {
             throw { statusCode: 401, message: "ไม่มีอีเมลของผู้ใช้งานนี้" };
         }
@@ -66,7 +66,7 @@ async function login(req, res) {
             throw { statusCode: 401, message: "รหัสผ่านไม่ถูกต้อง" };
         }
 
-        const userInDatabase = await User.findOne({ _id: accountInDatabase.userId });
+        const userInDatabase = await User.findOne({ _id: accountInDatabase.userId }).exec();
 
         const payload = {
             fullname: userInDatabase.fullname,

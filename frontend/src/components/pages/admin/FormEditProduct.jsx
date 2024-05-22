@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom';
-import { updateData } from '../../../fetchs/product.jsx';
+import { updateProduct } from '../../../fetchs/product.jsx';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { toast } from 'react-toastify';
@@ -12,7 +12,7 @@ function FormEditProduct() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const updateProduct = async (e) => {
+    const updateItem = async (e) => {
         try {
             e.preventDefault();
 
@@ -21,7 +21,7 @@ function FormEditProduct() {
             formData.append("price", price);
             formData.append("file", file);
 
-            await updateData(id, formData);
+            await updateProduct(id, formData);
 
             toast.success("เเก้ไขข้อมูลสินค้าสำเร็จ", {
                 position: "top-center",
@@ -57,7 +57,7 @@ function FormEditProduct() {
     return (
         <div>
             <h1 style={{ textAlign: "center", color: "white" }}>ฟอร์มเเก้ไขข้อมูลสินค้า</h1>
-            <form onSubmit={updateProduct} encType='multipart/form-data' style={{ marginBottom: "36px" }}>
+            <form onSubmit={updateItem} encType='multipart/form-data' style={{ marginBottom: "36px" }}>
                 <h2 style={{ color: "white" }}>เเก้ไขข้อมูลสินค้า ({id})</h2>
                 <div>
                     <TextField

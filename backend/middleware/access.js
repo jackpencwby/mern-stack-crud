@@ -3,8 +3,8 @@ const jwt = require("jsonwebtoken");
 
 async function access(req, res, next) {
     try {
-        const authToken = req.cookies.token;
-        const { role } = await jwt.verify(authToken, process.env.SIGNATURE);
+        const token = req.cookies.token;
+        const { role } = await jwt.verify(token, process.env.SIGNATURE);
         if (role !== "admin") {
             throw { statusCode: 401, message: "คุณไม่มีสิทธิ์เข้าถึงในการใช้ API เพราะคุณไม่ใช่ Admin" };
         }

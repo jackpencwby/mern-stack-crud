@@ -7,7 +7,7 @@ const upload = require("../middleware/upload");
 const router = express.Router();
 
 // http://localhost:8000/api/product/
-router.get("/", auth, readAllProduct);
+router.get("/", readAllProduct);
 
 // http://localhost:8000/api/product/?id=
 router.get("/", auth, readProduct);

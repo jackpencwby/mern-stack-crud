@@ -3,8 +3,8 @@ const jwt = require("jsonwebtoken");
 
 async function auth(req, res, next) {
     try {
-        const authToken = req.cookies.token;
-        await jwt.verify(authToken, process.env.SIGNATURE);
+        const token = req.cookies.token;
+        await jwt.verify(token, process.env.SIGNATURE);
         next();
     }
     catch (error) {
